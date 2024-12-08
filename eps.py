@@ -2,6 +2,7 @@ import yfinance as yf
 import matplotlib.pyplot as plt
 import pandas as pd
 import numpy as np
+import os  # Import os module to create directories
 
 # Define the tickers for the Magnificent 7 tech stocks
 tickers = ['GOOGL', 'AAPL', 'MSFT', 'AMZN', 'NVDA', 'META', 'TSLA']
@@ -32,6 +33,10 @@ colors = {'1': 'red', '2': 'orange', '3': 'green', '4': 'blue'}
 # Find the global min and max for all stocks to set the y-axis range
 y_min = price_changes_standardized.min().min()  # Minimum value across all stocks
 y_max = price_changes_standardized.max().max()  # Maximum value across all stocks
+
+# Create a directory to save the plots
+save_dir = 'saved_plots'
+os.makedirs(save_dir, exist_ok=True)  # Create directory if it doesn't exist
 
 # Loop through each stock and create its own plot
 for ticker in tickers:
@@ -71,6 +76,10 @@ for ticker in tickers:
     # Set the same y-axis limits for all plots
     plt.ylim(y_min, y_max)
 
-    # Show the plot for this stock
+    # Save the plot to the specified directory
+    plot_filename = os.path.join(save_dir, f'{ticker}_standardized_plot.png')
     plt.tight_layout()
+    plt.savefig(plot_filename)  # Save the figure as a PNG file
+    
+    # Optionally, show the plot (comment out if not needed)
     plt.show()
